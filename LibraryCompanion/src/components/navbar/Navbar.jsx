@@ -4,8 +4,9 @@ import dark_mode from "../../assets/dark_mode.svg"
 import magnifier from "../../assets/magnifier.svg"
 import profile from "../../assets/profile.svg"
 
-function Navbar() {
+function Navbar({ children }) {
     return (
+        <>
         <nav className={style.mainContainer}>
             <div className={style.leftContainer}>
                 <img src={logo} alt="Library Logo" className={style.logo} />
@@ -35,6 +36,8 @@ function Navbar() {
                 <button className={style.signIn}>Sign in</button>
             </div>
         </nav>
+        {children}
+        </>
     )
 }
 

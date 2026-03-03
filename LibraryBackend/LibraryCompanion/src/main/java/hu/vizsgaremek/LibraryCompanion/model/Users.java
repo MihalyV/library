@@ -11,7 +11,7 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_ID")
-    private Integer userId;
+    private Long userId;
 
     @Column(nullable = false,length = 255)
     private String name;
@@ -19,7 +19,7 @@ public class Users {
     @Column(nullable = false, unique = true, length = 255)
     private String email;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, length = 20)
     private String password;
 
     @Column(name = "date_of_birth")
@@ -34,11 +34,11 @@ public class Users {
     public Users() {
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

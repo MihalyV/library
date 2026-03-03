@@ -11,7 +11,7 @@ public class Loans {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "loan_ID")
-    private Integer loanId;
+    private Long loanId;
 
     @ManyToOne
     @JoinColumn(name = "user_ID", nullable = false)
@@ -37,11 +37,11 @@ public class Loans {
     public Loans() {
     }
 
-    public Integer getLoanId() {
+    public long getLoanId() {
         return loanId;
     }
 
-    public void setLoanId(Integer loanId) {
+    public void setLoanId(Long loanId) {
         this.loanId = loanId;
     }
 

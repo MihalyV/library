@@ -12,7 +12,7 @@ public class ItemCopies {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "copy_ID")
-    private Integer copyId;
+    private Long copyId;
 
     @ManyToOne
     @JoinColumn(name = "item_ID", nullable = false)
@@ -34,11 +34,11 @@ public class ItemCopies {
     public ItemCopies() {
     }
 
-    public Integer getCopyId() {
+    public Long getCopyId() {
         return copyId;
     }
 
-    public void setCopyId(Integer copyId) {
+    public void setCopyId(Long copyId) {
         this.copyId = copyId;
     }
 

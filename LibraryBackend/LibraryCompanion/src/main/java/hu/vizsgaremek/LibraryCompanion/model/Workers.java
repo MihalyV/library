@@ -11,7 +11,7 @@ public class Workers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "worker_ID")
-    private Integer workerId;
+    private Long workerId;
 
     @Column(name = "phone_number", length = 15, nullable = false)
     private String phoneNumber;
@@ -25,17 +25,17 @@ public class Workers {
     @Column(name = "reg_date")
     private LocalDate regDate;
 
-    @Column(name = "password", length = 255)
+    @Column(name = "password", length = 20)
     private String password;
 
     public Workers() {
     }
 
-    public Integer getWorkerId() {
+    public Long getWorkerId() {
         return workerId;
     }
 
-    public void setWorkerId(Integer workerId) {
+    public void setWorkerId(Long workerId) {
         this.workerId = workerId;
     }
 

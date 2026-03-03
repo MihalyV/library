@@ -12,7 +12,7 @@ public class Items {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_ID")
-    private Integer itemId;
+    private Long itemId;
 
     @Column(name = "title", length = 128, nullable = false)
     private String title;
@@ -52,11 +52,11 @@ public class Items {
     public Items() {
     }
 
-    public Integer getItemId() {
+    public Long getItemId() {
         return itemId;
     }
 
-    public void setItemId(Integer itemId) {
+    public void setItemId(Long itemId) {
         this.itemId = itemId;
     }
 

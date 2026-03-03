@@ -11,7 +11,7 @@ public class History {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "history_ID")
-    private Integer historyId;
+    private Long historyId;
 
     @ManyToOne
     @JoinColumn(name = "item_ID", nullable = false)
@@ -34,11 +34,11 @@ public class History {
     public History() {
     }
 
-    public Integer getHistoryId() {
+    public long getHistoryId() {
         return historyId;
     }
 
-    public void setHistoryId(Integer historyId) {
+    public void setHistoryId(Long historyId) {
         this.historyId = historyId;
     }
 

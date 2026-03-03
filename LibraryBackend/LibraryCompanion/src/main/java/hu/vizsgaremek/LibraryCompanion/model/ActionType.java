@@ -9,7 +9,7 @@ public class ActionType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "action_Id")
-    private Integer actionId;
+    private Long actionId;
 
     @Column(name = "action", nullable = false)
     private String action;
@@ -17,11 +17,11 @@ public class ActionType {
     public ActionType() {
     }
 
-    public Integer getActionId() {
+    public long getActionId() {
         return actionId;
     }
 
-    public void setActionId(Integer actionId) {
+    public void setActionId(Long actionId) {
         this.actionId = actionId;
     }
 

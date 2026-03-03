@@ -9,7 +9,7 @@ public class ItemType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "type_ID")
-    private Integer typeId;
+    private Long typeId;
 
     @Column(name = "item_type")
     private String itemType;
@@ -17,11 +17,11 @@ public class ItemType {
     public ItemType() {
     }
 
-    public Integer getTypeId() {
+    public Long getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(Integer typeId) {
+    public void setTypeId(Long typeId) {
         this.typeId = typeId;
     }
 

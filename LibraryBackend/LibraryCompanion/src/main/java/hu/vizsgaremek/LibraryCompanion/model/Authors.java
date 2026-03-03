@@ -9,21 +9,21 @@ public class Authors {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "author_ID")
-    private Integer authorId;
+    private Long authorId;
 
     @Column(name = "author_name", length = 128)
     private String authorName;
 
-    public Authors(Integer authorId, String authorName) {
+    public Authors(Long authorId, String authorName) {
         this.authorId = authorId;
         this.authorName = authorName;
     }
 
-    public Integer getAuthorId() {
+    public long getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(Integer authorId) {
+    public void setAuthorId(Long authorId) {
         this.authorId = authorId;
     }
 

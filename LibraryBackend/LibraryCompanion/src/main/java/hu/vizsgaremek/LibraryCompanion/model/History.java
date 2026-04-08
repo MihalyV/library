@@ -15,11 +15,11 @@ public class History {
 
     @ManyToOne
     @JoinColumn(name = "item_ID", nullable = false)
-    private Items item;
+    private Item item;
 
     @ManyToOne
     @JoinColumn(name = "user_ID", nullable = false)
-    private Users user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "action_ID", nullable = false)
@@ -42,19 +42,19 @@ public class History {
         this.historyId = historyId;
     }
 
-    public Items getItem() {
+    public Item getItem() {
         return item;
     }
 
-    public void setItem(Items item) {
+    public void setItem(Item item) {
         this.item = item;
     }
 
-    public Users getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Users user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

@@ -1,6 +1,6 @@
 package hu.vizsgaremek.LibraryCompanion.service;
 
-import hu.vizsgaremek.LibraryCompanion.model.Workers;
+import hu.vizsgaremek.LibraryCompanion.model.Worker;
 import hu.vizsgaremek.LibraryCompanion.repository.WorkerRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +16,15 @@ public class WorkerService {
         this.workerRepository = workerRepository;
     }
 
-    public List<Workers> getAllWorkers() {
+    public List<Worker> getAllWorkers() {
         return workerRepository.findAll();
     }
 
-    public Workers saveWorker (Workers worker) {
+    public Worker saveWorker (Worker worker) {
         return workerRepository.save(worker);
     }
 
-    public Workers getWorkerById(Long id) {
+    public Worker getWorkerById(Long id) {
         return workerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Nem található ilyen ID-jú dolgozó!"));
     }

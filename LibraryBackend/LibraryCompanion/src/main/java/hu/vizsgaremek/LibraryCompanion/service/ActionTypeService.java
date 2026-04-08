@@ -4,7 +4,6 @@ import hu.vizsgaremek.LibraryCompanion.model.ActionType;
 import hu.vizsgaremek.LibraryCompanion.repository.ActionTypeRepository;
 import org.springframework.stereotype.Service;
 
-import javax.swing.*;
 import java.util.List;
 
 @Service

@@ -37,7 +37,7 @@ public class WorkerController {
         return new ResponseEntity<>(savedWorker, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id{")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteWorkerById(@PathVariable Long id) {
         workerService.deleteWorkerById(id);
         return ResponseEntity.noContent().build();

@@ -1,5 +1,6 @@
 package hu.vizsgaremek.LibraryCompanion.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -37,6 +38,7 @@ public class Worker {
     @Column(name = "reg_date")
     private LocalDate regDate;
 
+    @JsonIgnore
     @Column(name = "password", length = 60)
     private String password;
 

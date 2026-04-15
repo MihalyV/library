@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "item_copies")
-public class ItemCopy {
+public class ItemCopies {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public class ItemCopy {
     @Column(name = "status", nullable = false)
     private String status;
 
-    @Column(name = "condition", length = 255, nullable = false)
+    @Column(name = "physical_condition", length = 255, nullable = false)
     private String condition;
 
     @Column(name = "date_of_purchase", nullable = false)
@@ -31,7 +31,7 @@ public class ItemCopy {
     @JoinColumn(name = "recorder_librarian_ID")
     private Worker recorderLibrarian;
 
-    public ItemCopy() {
+    public ItemCopies() {
     }
 
     public Long getCopyId() {

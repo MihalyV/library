@@ -1,5 +1,6 @@
 package hu.vizsgaremek.LibraryCompanion.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -32,6 +33,7 @@ public class User {
     @Column(nullable = false, unique = true, length = 255)
     private String email;
 
+    @JsonIgnore
     @Column(nullable = false, length = 60)
     private String password;
 

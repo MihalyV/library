@@ -18,7 +18,7 @@ public class ActionTypeController {
         this.actionTypeService = actionTypeService;
     }
 
-    @GetMapping
+    @GetMapping("/admin/actions")
     public ResponseEntity<List<ActionType>> getAllActionTypes() {
         return ResponseEntity.ok(actionTypeService.getAllActionTypes());
     }
@@ -28,8 +28,9 @@ public class ActionTypeController {
         return ResponseEntity.ok(actionTypeService.getActionTypeById(id));
     }
 
-    @PostMapping
-    public ResponseEntity<ActionType> createActionType(@RequestBody ActionType actionType) {
-        return new ResponseEntity<>(actionTypeService.saveActionType(actionType), HttpStatus.CREATED);
+    @DeleteMapping("/admin/actions/{id}")
+    public ResponseEntity<Void> deleteActionTypeById(@PathVariable Long id) {
+        actionTypeService.deleteActionTypeById(id);
+        return ResponseEntity.noContent().build();
     }
 }

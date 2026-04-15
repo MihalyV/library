@@ -27,6 +27,10 @@ public class ItemService {
                 .orElseThrow(() -> new RuntimeException("Nincs ilyen ID-jú item"));
     }
 
+    public List<Item> getFeaturedItems() {
+        return itemsRepository.findByFeaturedTrue();
+    }
+
     public void deleteItemById(Long id) {
         if (!itemsRepository.existsById(id)) {
             throw new RuntimeException("Nem rendelkezik egyik item sem ilyen ID-val!");

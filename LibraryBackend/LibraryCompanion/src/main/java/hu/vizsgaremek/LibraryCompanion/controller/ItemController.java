@@ -30,6 +30,11 @@ public class ItemController {
         return ResponseEntity.ok(itemService.getItemById(id));
     }
 
+    @GetMapping("/featured")
+    public List<Item> getFeaturedItems() {
+        return itemService.getFeaturedItems();
+    }
+
     @PostMapping
     public ResponseEntity<Item> createItem(@RequestBody Item item) {
         Item newItem = itemService.saveItem(item);

@@ -14,6 +14,9 @@ public class Author {
     @Column(name = "author_name", length = 128)
     private String authorName;
 
+    public Author() {
+    }
+
     public Author(Long authorId, String authorName) {
         this.authorId = authorId;
         this.authorName = authorName;

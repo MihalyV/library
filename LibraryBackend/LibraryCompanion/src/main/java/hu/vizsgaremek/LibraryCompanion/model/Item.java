@@ -17,11 +17,15 @@ public class Item {
     @Column(name = "title", length = 128, nullable = false)
     private String title;
 
-    @Column(name = "ISBN")
-    private Integer ISBN;
+    @Column(name = "ISBN", nullable = true)
+    private String ISBN;
 
-    @ManyToOne
-    @JoinColumn(name = "type_ID")
+    @Column(name = "is_featured", nullable = false)
+    private boolean featured = false;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "type_id", nullable = false)
     private ItemType itemType;
 
     @ManyToMany
@@ -40,10 +44,10 @@ public class Item {
     )
     private Set<Author> author = new HashSet<>();
 
-    @Column(name = "short_description", nullable = false, unique = true, columnDefinition = "TEXT")
+    @Column(name = "short_description", nullable = false, columnDefinition = "TEXT")
     private String shortDescription;
 
-    @Column(name = "long_description", nullable = false, unique = true, columnDefinition = "TEXT")
+    @Column(name = "long_description", nullable = false, columnDefinition = "TEXT")
     private String longDescription;
 
     @Column(name = "min_age", nullable = false)
@@ -68,11 +72,11 @@ public class Item {
         this.title = title;
     }
 
-    public Integer getISBN() {
+    public String getISBN() {
         return ISBN;
     }
 
-    public void setISBN(Integer ISBN) {
+    public void setISBN(String ISBN) {
         this.ISBN = ISBN;
     }
 
@@ -122,5 +126,13 @@ public class Item {
 
     public void setMinAge(Integer minAge) {
         this.minAge = minAge;
+    }
+
+    public boolean isFeatured() {
+        return featured;
+    }
+
+    public void setFeatured(boolean featured) {
+        this.featured = featured;
     }
 }

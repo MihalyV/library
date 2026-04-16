@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Container, Typography, CircularProgress } from '@mui/material';
+import { Box, Container, Typography, CircularProgress, Button } from '@mui/material';
 import ItemCard from './ItemCard';
 
 function FeaturedItems() {
@@ -8,7 +8,7 @@ function FeaturedItems() {
 
   React.useEffect(() => {
     fetch('http://localhost:8080/api/items/featured')
-      .then(res => res.json())
+      .then(resp => resp.json())
       .then(data => {
         setItems(data);
         setLoading(false);
@@ -21,55 +21,100 @@ function FeaturedItems() {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', py: 10 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: '10rem', paddingBottom: '10rem' }}>
         <CircularProgress sx={{ color: '#4ca38d' }} />
       </Box>
     );
   }
 
   return (
-    <Box sx={{ py: '3rem', backgroundColor: '#f8fafc' }}>
-      <Container maxWidth="lg">
+    <Box sx={{ paddingTop: '3rem', paddingBottom: '3rem', backgroundColor: '#101A17' }}>
+      <Box 
+        sx={{
+          display: 'flex', 
+          flexDirection: 'row', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          paddingLeft: '4rem', 
+          paddingRight: '4rem'
+        }}
+      >
         <Typography
           variant="h3"
           sx={{
-            mb: '4rem',
+            marginBottom: '1rem',
             fontWeight: 800,
-            textAlign: 'center',
+            textAlign: 'left',
             fontFamily: 'serif',
-            color: '#0a1410'
+            color: 'white'
           }}
         >
           Kiemelt ajánlataink
         </Typography>
 
-        <Box
+        <Button
+          variant="outlined"
+          size="small"
           sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 6,
-            justifyContent: 'center'
+            borderRadius: "0.5rem",
+            backgroundColor: '#202020',
+            borderColor: "#a6aaa9",
+            color: "white",
+            textTransform: "none",
+            fontWeight: 600,
+            padding: '0.5rem 1.5rem',
+            "&:hover": {
+              backgroundColor: "#939e34",
+              color: "black",
+              borderColor: "#336b5d",
+            },
           }}
         >
-          {items.map((data) => (
-            <Box
-              key={data.itemId}
-              sx={{
-                flex: '1 1 300px',
-                maxWidth: {
-                  xs: '100%',
-                  sm: 'calc(50% - 32px)',
-                  md: 'calc(33.33% - 32px)'
-                },
-                display: 'flex'
-              }}
-            >
-              <ItemCard item={data} />
-            </Box>
-          ))}
-        </Box>
+          Összes megtekintése
+        </Button>
+      </Box>
 
-      </Container>
+      <Typography
+        variant="h5"
+        sx={{
+          marginBottom: '4rem',
+          fontWeight: 800,
+          textAlign: 'left',
+          fontFamily: 'serif',
+          color: 'white',
+          paddingLeft: '4rem'
+        }}
+      >
+        Fedezze fel legújabb és legnépszerűbb könyveinket
+      </Typography>
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '3rem',
+          justifyContent: 'center',
+          paddingLeft: '5rem',
+          paddingRight: '5rem'
+        }}
+      >
+        {items.map((data) => (
+          <Box
+            key={data.itemId}
+            sx={{
+              flex: '1 1 18.75rem',
+              maxWidth: {
+                xs: '100%',
+                sm: 'calc(50% - 2rem)',
+                md: 'calc(33.33% - 2rem)'
+              },
+              display: 'flex'
+            }}
+          >
+            <ItemCard item={data} />
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 }

@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { 
   Box, Typography, Button, Container, TextField, 
   Stack, Chip 
@@ -7,7 +8,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import PeopleIcon from '@mui/icons-material/People';
 import SecurityIcon from '@mui/icons-material/Security';
 
-function Hero() {
+function HeroSection() {
   return (
     <Box
       sx={{
@@ -31,7 +32,17 @@ function Hero() {
         },
       }}
     >
-      <Container maxWidth={false} sx={{ position: 'relative', zIndex: 2, py: '4rem', px: { md: '4rem' } }}>
+      <Container 
+        maxWidth={false} 
+        sx={{ 
+          position: 'relative', 
+          zIndex: 2, 
+          paddingTop: '4rem', 
+          paddingBottom: '4rem', 
+          paddingLeft: { md: '4rem' }, 
+          paddingRight: { md: '4rem' } 
+        }}
+      >
         <Box sx={{ 
           display: 'flex', 
           flexDirection: 'column', 
@@ -45,7 +56,7 @@ function Hero() {
             sx={{ 
               backgroundColor: 'rgba(255, 255, 255, 0.1)', 
               color: '#eab308', 
-              mb: '2rem', 
+              marginBottom: '2rem', 
               borderRadius: '0.5rem',
               border: '1px solid rgba(234, 179, 8, 0.3)',
               fontSize: '0.875rem'
@@ -59,7 +70,7 @@ function Hero() {
               fontSize: { xs: '2.5rem', md: '4rem' },
               maxWidth: '50rem',
               lineHeight: 1.2,
-              mb: '1.5rem',
+              marginBottom: '1.5rem',
               color: '#0a1410',
               fontFamily: 'serif'
             }}
@@ -72,7 +83,7 @@ function Hero() {
             sx={{ 
               fontSize: '1.125rem', 
               maxWidth: '37.5rem', 
-              mb: '3rem', 
+              marginBottom: '3rem', 
               color: '#1a2e26',
               lineHeight: 1.6
             }}
@@ -84,7 +95,7 @@ function Hero() {
           <Stack 
             direction={{ xs: 'column', sm: 'row' }} 
             spacing={'1rem'} 
-            sx={{ mb: '4rem', width: '100%', justifyContent: 'flex-start' }}
+            sx={{ marginBottom: '4rem', width: '100%', justifyContent: 'flex-start' }}
           >
             <TextField
               placeholder="Keresés cím, szerző vagy ISBN alapján..."
@@ -107,7 +118,8 @@ function Hero() {
               sx={{
                 backgroundColor: '#eab308',
                 color: '#0a1410',
-                px: '2.5rem',
+                paddingLeft: '2.5rem',
+                paddingRight: '2.5rem',
                 height: '3.5rem',
                 borderRadius: '0.75rem',
                 fontWeight: 'bold',
@@ -143,4 +155,4 @@ function Hero() {
   );
 }
 
-export default Hero;
+export default HeroSection;

@@ -4,7 +4,7 @@ import Navbar from './components/navbar/Navbar';
 import Footer from './components/footer/Footer';
 import { Box } from '@mui/material';
 import CatalogPage from './pages/CatalogPage';
-import CSS from './App.css';
+import './App.css';
 
 function App() {
   return (

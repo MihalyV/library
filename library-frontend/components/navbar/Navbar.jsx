@@ -7,7 +7,7 @@ import DarkModeIcon from '@mui/icons-material/DarkModeOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const pages = ['Főoldal', 'Katalógus', 'Keresés', 'Dashboard'];
 
@@ -19,6 +19,8 @@ function Navbar() {
     setActivePage(page);
     if (page === 'Főoldal') navigate('/');
     else if (page === 'Katalógus') navigate('/katalogus');
+    else if (page === 'Keresés') navigate('/kereses');
+    else if(page === 'Bejelentkezés') navigate('/auth');
   };
 
   return (
@@ -94,18 +96,20 @@ function Navbar() {
                 <PersonOutlinedIcon sx={{ fontSize: '1.25rem' }} />
             </IconButton>
             
-            <Button 
-              variant="outlined" 
-              sx={{ 
-                color: 'white', 
-                borderColor: '#333', 
-                borderRadius: '0.625rem', 
+<Button
+              component={Link}
+              to="/auth"
+              variant="contained"
+              sx={{
+                backgroundColor: '#4ca38d',
+                color: '#0a1410',
+                fontWeight: 700,
                 textTransform: 'none',
-                fontSize: '0.9rem',
-                paddingLeft: '1.5rem', 
-                paddingRight: '1.5rem',
-                marginLeft: '0.5rem',
-                '&:hover': { borderColor: '#4ca38d', backgroundColor: 'rgba(76, 163, 141, 0.05)' }
+                borderRadius: '0.6rem',
+                px: 3,
+                '&:hover': {
+                  backgroundColor: '#3d8270',
+                }
               }}
             >
               Bejelentkezés

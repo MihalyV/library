@@ -1,6 +1,5 @@
 package hu.vizsgaremek.LibraryCompanion.service;
 
-import hu.vizsgaremek.LibraryCompanion.model.ItemCopies;
 import hu.vizsgaremek.LibraryCompanion.model.ItemType;
 import hu.vizsgaremek.LibraryCompanion.repository.ItemTypeRepository;
 import org.springframework.stereotype.Service;

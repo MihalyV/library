@@ -32,8 +32,11 @@ public class Worker {
     @Column(name = "worker_email", length = 255, nullable = false, unique = true)
     private String workerEmail;
 
-    @Column(name = "worker_name", length = 100, nullable = false)
-    private String workerName;
+    @Column(name = "last_name", nullable = false, length = 100)
+    private String lastName;
+
+    @Column(name = "first_name", nullable = false, length = 100)
+    private String firstName;
 
     @Column(name = "reg_date")
     private LocalDate regDate;
@@ -69,16 +72,24 @@ public class Worker {
         this.workerEmail = workerEmail;
     }
 
-    public String getWorkerName() {
-        return workerName;
-    }
-
-    public void setWorkerName(String workerName) {
-        this.workerName = workerName;
-    }
-
     public LocalDate getRegDate() {
         return regDate;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public void setRegDate(LocalDate regDate) {

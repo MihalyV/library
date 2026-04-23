@@ -27,8 +27,11 @@ public class User {
     @Column(name = "user_ID")
     private Long userId;
 
-    @Column(nullable = false,length = 255)
-    private String name;
+    @Column(name = "last_name", nullable = false, length = 100)
+    private String lastName;
+
+    @Column(name = "first_name", nullable = false, length = 100)
+    private String firstName;
 
     @Column(nullable = false, unique = true, length = 255)
     private String email;
@@ -49,20 +52,28 @@ public class User {
     public User() {
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public Long getUserId() {
         return userId;
     }
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getEmail() {

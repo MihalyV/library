@@ -19,7 +19,7 @@ public class Loan {
 
     @ManyToOne
     @JoinColumn(name = "copy_ID", nullable = false)
-    private ItemCopies itemCopies;
+    private ItemCopy itemCopy;
 
     @ManyToOne
     @JoinColumn(name = "librarian_ID", nullable = false)
@@ -53,12 +53,12 @@ public class Loan {
         this.user = user;
     }
 
-    public ItemCopies getItemCopy() {
-        return itemCopies;
+    public ItemCopy getItemCopy() {
+        return itemCopy;
     }
 
-    public void setItemCopy(ItemCopies itemCopies) {
-        this.itemCopies = itemCopies;
+    public void setItemCopy(ItemCopy itemCopy) {
+        this.itemCopy = itemCopy;
     }
 
     public Worker getLibrarian() {

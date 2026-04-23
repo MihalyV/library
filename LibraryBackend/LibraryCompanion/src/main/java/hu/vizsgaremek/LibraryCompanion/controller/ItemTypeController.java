@@ -1,6 +1,5 @@
 package hu.vizsgaremek.LibraryCompanion.controller;
 
-import hu.vizsgaremek.LibraryCompanion.model.ItemCopies;
 import hu.vizsgaremek.LibraryCompanion.model.ItemType;
 import hu.vizsgaremek.LibraryCompanion.service.ItemTypeService;
 import org.springframework.http.HttpStatus;

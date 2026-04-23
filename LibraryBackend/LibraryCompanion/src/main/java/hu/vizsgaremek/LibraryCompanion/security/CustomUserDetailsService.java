@@ -21,10 +21,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
-                .map(u -> new CustomUserDetails(u.getEmail(), u.getPassword(), u.getRole())) // searches for user in users table
+                .map(u -> new CustomUserDetails(u.getEmail(), u.getPassword(), u.getFirstName(), u.getRole()))
                 .orElseGet(() -> workerRepository.findByWorkerEmail(email)
-                        .map(w -> new CustomUserDetails(w.getWorkerEmail(), w.getPassword(), w.getRole())) //searches for user in workers table
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email)) //if worker is not found anywhere
+                        .map(w -> new CustomUserDetails(w.getWorkerEmail(), w.getPassword(), w.getFirstName(), w.getRole()))
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email))
                 );
     }
 }

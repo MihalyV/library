@@ -12,11 +12,13 @@ import java.util.Collection;
 public class CustomUserDetails implements UserDetails {
     private String email;
     private String password;
+    private String firstName;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(String email, String password, Role role) {
+    public CustomUserDetails(String email, String password, String firstName, Role role) {
         this.email = email;
         this.password = password;
+        this.firstName = firstName;
         this.authorities = Collections.singletonList(new SimpleGrantedAuthority(role.name()));
     }
 
@@ -25,7 +27,11 @@ public Collection<? extends GrantedAuthority> getAuthorities() {
     return authorities;
 }
 
-@Override
+    public String getFirstName() {
+        return firstName;
+    }
+
+    @Override
 public String getPassword() {
     return password;
 }

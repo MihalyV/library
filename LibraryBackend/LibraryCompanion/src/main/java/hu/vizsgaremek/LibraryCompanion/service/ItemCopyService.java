@@ -1,7 +1,6 @@
 package hu.vizsgaremek.LibraryCompanion.service;
 
-import hu.vizsgaremek.LibraryCompanion.model.ItemCopies;
-import hu.vizsgaremek.LibraryCompanion.model.ItemCopies;
+import hu.vizsgaremek.LibraryCompanion.model.ItemCopy;
 import hu.vizsgaremek.LibraryCompanion.repository.ItemCopyRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +14,15 @@ public class ItemCopyService {
         this.itemCopyRepository = itemCopyRepository;
     }
 
-    public List<ItemCopies> getAllItemCopies() {
+    public List<ItemCopy> getAllItemCopies() {
         return itemCopyRepository.findAll();
     }
 
-    public ItemCopies saveItemCopy(ItemCopies itemCopy) {
+    public ItemCopy saveItemCopy(ItemCopy itemCopy) {
         return itemCopyRepository.save(itemCopy);
     }
 
-    public ItemCopies getItemCopyById(Long id) {
+    public ItemCopy getItemCopyById(Long id) {
         return itemCopyRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Nincs ilyen ID-jú item copy"));
     }

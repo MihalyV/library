@@ -1,5 +1,6 @@
 package hu.vizsgaremek.LibraryCompanion.security;
 
+import hu.vizsgaremek.LibraryCompanion.config.JwtRequestFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -9,10 +10,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
+
+    private final JwtRequestFilter jwtRequestFilter;
+
+    public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -22,21 +30,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults()) // Engedélyezi a Spring Security szintű CORS-t (a WebConfig alapján)
-                .csrf(csrf -> csrf.disable()) // API-k esetén a CSRF általában kikapcsolható (ha JWT-t használsz)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Nincs szerver oldali session
+                .cors(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                                //.requestMatchers("/api/**/modificate").hasAnyRole("Librarian")
-                                //.requestMatchers("/api/**/lending").hasAnyRole("Librarian","SubLibrarian")
-                                .requestMatchers("/login").permitAll()
-                                .requestMatchers("/registration").permitAll()
-                                .requestMatchers("/logout").permitAll()
-                                .requestMatchers("/").permitAll()
-                                .requestMatchers("/api/items/**").permitAll()
-                                .requestMatchers("/api/**").permitAll()
-                                .requestMatchers("/").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/items/**").permitAll()
+                        .requestMatchers("/").permitAll()
                         .anyRequest().authenticated()
                 );
+
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 }

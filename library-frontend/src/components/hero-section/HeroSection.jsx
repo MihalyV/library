@@ -7,8 +7,25 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import PeopleIcon from '@mui/icons-material/People';
 import SecurityIcon from '@mui/icons-material/Security';
+import { useNavigate } from 'react-router-dom';
 
 function HeroSection() {
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      navigate(`/kereses?query=${encodeURIComponent(searchTerm)}`);
+    } else {
+      navigate('/kereses');
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
   return (
     <Box
       sx={{
@@ -68,7 +85,7 @@ function HeroSection() {
             sx={{ 
               fontWeight: 700, 
               fontSize: { xs: '2.5rem', md: '4rem' },
-              maxWidth: '50rem',
+              maxWidth: '45rem',
               lineHeight: 1.2,
               marginBottom: '1.5rem',
               color: '#0a1410',
@@ -100,6 +117,9 @@ function HeroSection() {
             <TextField
               placeholder="Keresés cím, szerző vagy ISBN alapján..."
               variant="outlined"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyPress={handleKeyPress}
               sx={{
                 width: { xs: '100%', sm: '30rem' },
                 backgroundColor: '#1a2e26',
@@ -114,6 +134,7 @@ function HeroSection() {
             />
             <Button
               variant="contained"
+              onClick={handleSearch}
               endIcon={<ArrowForwardIcon />}
               sx={{
                 backgroundColor: '#eab308',
@@ -131,7 +152,6 @@ function HeroSection() {
               Keresés
             </Button>
           </Stack>
-
           <Stack 
             direction={{ xs: 'column', md: 'row' }} 
             spacing={'3rem'}

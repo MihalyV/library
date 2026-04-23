@@ -1,80 +1,84 @@
 import * as React from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { 
-  Box, Container, Typography, TextField, InputAdornment, 
-  IconButton, Stack, Button, MenuItem, Select
+  Box, Container, Typography, TextField, MenuItem, 
+  Select, Pagination, InputAdornment, IconButton, Stack, CircularProgress, 
+  Button
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import ItemCard from '../../ui/ItemCard';
+import ItemDetails from '../../ui/ItemDetails';
 
-function Search() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const queryParam = searchParams.get('query') || '';
-  
-  const [searchTerm, setSearchTerm] = React.useState(queryParam);
+function Catalog() {
+  const [items, setItems] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [page, setPage] = React.useState(1);
+  const itemsPerPage = 6;
+
   const [showFilters, setShowFilters] = React.useState(false);
+  const [selectedItem, setSelectedItem] = React.useState(null);
+  const [isDetailsOpen, setIsDetailsOpen] = React.useState(false);
+
+  const [searchTerm, setSearchTerm] = React.useState('');
   const [type, setType] = React.useState('Összes típus');
   const [status, setStatus] = React.useState('Minden státusz');
   const [genre, setGenre] = React.useState('Összes');
 
+  const handleOpenDetails = (item) => {
+    setSelectedItem(item);
+    setIsDetailsOpen(true);
+  };
+
   React.useEffect(() => {
-    setSearchTerm(queryParam);
-  }, [queryParam]);
+    setLoading(true);
+    fetch('http://localhost:8080/api/items') 
+      .then(res => res.json())
+      .then(data => {
+        setItems(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
-  const handleSearchTrigger = () => {
-    setSearchParams(searchTerm ? { query: searchTerm } : {});
-  };
+  const filteredItems = items.filter(item => {
+    const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType = type === 'Összes típus' || item.itemType?.typeName === type;
+    const matchesStatus = status === 'Minden státusz' || item.status === status;
+    const matchesGenre = genre === 'Összes' || item.genre === genre;
+    return matchesSearch && matchesType && matchesStatus && matchesGenre;
+  });
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSearchTrigger();
-    }
-  };
+  const indexOfLastItem = page * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
-    <Box sx={{ 
-      backgroundColor: '#0a1410', 
-      minHeight: '100vh', 
-      display: 'flex', 
-      flexDirection: 'column',
-      color: 'white',
-      py: '4rem'
-    }}>
-      <Container maxWidth="lg">
-        <Box sx={{ textAlign: 'center', mb: '3rem' }}>
-          <Typography variant="h2" sx={{ fontWeight: 800, mb: '1rem', fontFamily: 'serif' }}>
-            Keresés
-          </Typography>
-          <Typography sx={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '1.1rem' }}>
-            Keressen könyveink, DVD-ink és egyéb tételeink között cím, szerző, ISBN vagy műfaj alapján
-          </Typography>
-        </Box>
+    <Box sx={{ backgroundColor: '#0a1410', minHeight: '100vh', py: '4rem', color: 'white' }}>
+      <Container maxWidth="xl">
+        <Typography variant="h2" sx={{ fontWeight: 800, mb: '3rem', fontFamily: 'serif' }}>
+          Katalógus
+        </Typography>
 
         <Box sx={{ 
           backgroundColor: 'rgba(255, 255, 255, 0.03)', 
           p: '1.5rem', 
           borderRadius: '1.25rem', 
-          border: '1px solid rgba(255, 255, 255, 0.05)',
-          mb: '5rem'
+          mb: '3rem',
+          border: '1px solid rgba(255, 255, 255, 0.05)'
         }}>
-          <Stack 
-            direction="row" 
-            spacing={2} 
-            sx={{ 
-              mb: showFilters ? '2rem' : 0,
-              alignItems: 'center'
-            }}
-          >
+          <Stack direction="row" spacing={2} sx={{ mb: showFilters ? '2rem' : 0 }}>
             <TextField
               fullWidth
               placeholder="Cím, szerző vagy ISBN alapján keresés..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyPress={handleKeyPress}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setPage(1);
+              }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <SearchIcon sx={{ color: 'rgba(255,255,255,0.3)' }} />
+                    <SearchIcon sx={{ color: 'rgba(255,255,255,0.5)' }} />
                   </InputAdornment>
                 ),
               }}
@@ -83,15 +87,15 @@ function Search() {
                 borderRadius: '0.75rem',
                 '& .MuiOutlinedInput-root': {
                   height: '3.5rem',
-                  '& fieldset': { border: 'none' },
+                  '& fieldset': { borderColor: 'rgba(255,255,255,0.1)' },
+                  '&:hover fieldset': { borderColor: '#4ca38d' },
                 },
-                '& input': { color: 'white' }
+                input: { color: 'white' }
               }}
             />
             
             <Button
               variant="contained"
-              onClick={handleSearchTrigger}
               startIcon={<SearchIcon />}
               sx={{ 
                 backgroundColor: '#4ca38d', 
@@ -101,7 +105,6 @@ function Search() {
                 borderRadius: '0.75rem',
                 textTransform: 'none',
                 height: '3.5rem',
-                whiteSpace: 'nowrap',
                 '&:hover': { backgroundColor: '#3d8270' }
               }}
             >
@@ -112,7 +115,7 @@ function Search() {
               onClick={() => setShowFilters(!showFilters)}
               sx={{ 
                 backgroundColor: showFilters ? 'rgba(76, 163, 141, 0.2)' : 'rgba(255,255,255,0.05)', 
-                color: showFilters ? '#4ca38d' : 'white',
+                color: 'white',
                 borderRadius: '0.75rem',
                 width: '3.5rem',
                 height: '3.5rem',
@@ -129,7 +132,7 @@ function Search() {
               sx={{ 
                 display: 'flex', 
                 flexDirection: { xs: 'column', md: 'row' }, 
-                gap: '1.5rem',
+                gap: '2rem',
                 pt: '1.5rem',
                 borderTop: '1px solid rgba(255,255,255,0.05)'
               }}
@@ -141,7 +144,7 @@ function Search() {
                 <Select
                   fullWidth
                   value={type}
-                  onChange={(e) => setType(e.target.value)}
+                  onChange={(e) => { setType(e.target.value); setPage(1); }}
                   sx={{ 
                     backgroundColor: 'rgba(0,0,0,0.2)', 
                     color: 'white', 
@@ -154,6 +157,7 @@ function Search() {
                   <MenuItem value="Könyv">Könyv</MenuItem>
                   <MenuItem value="DVD">DVD</MenuItem>
                   <MenuItem value="Folyóirat">Folyóirat</MenuItem>
+                  <MenuItem value="Egyéb">Egyéb</MenuItem>
                 </Select>
               </Box>
 
@@ -164,7 +168,7 @@ function Search() {
                 <Select
                   fullWidth
                   value={status}
-                  onChange={(e) => setStatus(e.target.value)}
+                  onChange={(e) => { setStatus(e.target.value); setPage(1); }}
                   sx={{ 
                     backgroundColor: 'rgba(0,0,0,0.2)', 
                     color: 'white', 
@@ -186,7 +190,7 @@ function Search() {
                 <Select
                   fullWidth
                   value={genre}
-                  onChange={(e) => setGenre(e.target.value)}
+                  onChange={(e) => { setGenre(e.target.value); setPage(1); }}
                   sx={{ 
                     backgroundColor: 'rgba(0,0,0,0.2)', 
                     color: 'white', 
@@ -205,28 +209,40 @@ function Search() {
           )}
         </Box>
 
-        <Box sx={{ textAlign: 'center', opacity: 0.4 }}>
-          <Box sx={{ 
-            width: '80px', 
-            height: '80px', 
-            borderRadius: '50%', 
-            backgroundColor: 'rgba(255,255,255,0.03)', 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center', 
-            mx: 'auto',
-            mb: '1.5rem',
-            border: '1px solid rgba(255,255,255,0.05)'
-          }}>
-            <SearchIcon sx={{ fontSize: '2.5rem', color: '#4ca38d' }} />
-          </Box>
-          <Typography variant="h6">
-            {searchTerm ? `Eredmények keresése: "${searchTerm}"` : 'Használja a fenti keresőt a tételek megtalálásához'}
-          </Typography>
-        </Box>
+        {loading ? (
+          <CircularProgress sx={{ display: 'block', mx: 'auto', color: '#4ca38d' }} />
+        ) : (
+          <>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '2rem' }}>
+              {currentItems.map((item) => (
+                <Box key={item.itemId} sx={{ flex: { xs: '1 1 100%', md: '1 1 calc(50% - 1rem)' } }}>
+                  <ItemCard item={item} onOpenDetails={() => handleOpenDetails(item)} />
+                </Box>
+              ))}
+            </Box>
+
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: '4rem' }}>
+              <Pagination 
+                count={Math.ceil(filteredItems.length / itemsPerPage)} 
+                page={page} 
+                onChange={(e, v) => setPage(v)}
+                sx={{ 
+                  '& .MuiPaginationItem-root': { color: 'white' },
+                  '& .Mui-selected': { backgroundColor: '#4ca38d !important', color: '#0a1410' }
+                }}
+              />
+            </Box>
+          </>
+        )}
+
+        <ItemDetails 
+          open={isDetailsOpen} 
+          onClose={() => setIsDetailsOpen(false)} 
+          item={selectedItem} 
+        />
       </Container>
     </Box>
   );
 }
 
-export default Search;
+export default Catalog;

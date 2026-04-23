@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { Box, Container, Typography, Button } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { useNavigate } from 'react-router-dom';
 
 function RegistrationSection() {
+  const navigate = useNavigate();
+
   return (
     <Box
       sx={{
@@ -60,6 +63,7 @@ function RegistrationSection() {
         >
           <Button
             variant="contained"
+            onClick={() => navigate('/bejelentkezes')}
             endIcon={<ArrowForwardIcon />}
             sx={{
               backgroundColor: '#eab308',
@@ -85,6 +89,7 @@ function RegistrationSection() {
 
           <Button
             variant="outlined"
+            onClick={() => navigate('/katalogus')}
             sx={{
               borderColor: '#eab308',
               color: '#eab308',

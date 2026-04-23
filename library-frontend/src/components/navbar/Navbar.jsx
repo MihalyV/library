@@ -6,12 +6,43 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import DarkModeIcon from '@mui/icons-material/DarkModeOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { api } from '../../services/api';
 
 const pages = ['Főoldal', 'Katalógus', 'Keresés', 'Dashboard'];
 
 function Navbar() {
   const [activePage, setActivePage] = useState('Főoldal');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userFirstName, setUserFirstName] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const token = localStorage.getItem('library_token');
+    const firstName = localStorage.getItem('user_first_name');
+    if (token && firstName) {
+      setIsLoggedIn(true);
+      setUserFirstName(firstName);
+    } else {
+      setIsLoggedIn(false);
+      setUserFirstName('');
+    }
+  }, [location]);
+
+  const handlePageClick = (page) => {
+    setActivePage(page);
+    if (page === 'Főoldal') navigate('/');
+    else if (page === 'Katalógus') navigate('/katalogus');
+    else if (page === 'Keresés') navigate('/kereses');
+  };
+
+  const handleLogout = () => {
+    api.logout();
+    setIsLoggedIn(false);
+    setUserFirstName('');
+  };
 
   return (
     <AppBar 
@@ -48,11 +79,10 @@ function Navbar() {
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
             {pages.map((page) => {
               const isActive = activePage === page;
-              
               return (
                 <Button
                   key={page}
-                  onClick={() => setActivePage(page)}
+                  onClick={() => handlePageClick(page)}
                   sx={{ 
                     marginTop: '1rem', 
                     marginBottom: '1rem',
@@ -75,7 +105,7 @@ function Navbar() {
             })}
           </Box>
 
-          <Stack direction="row" spacing={'0.5rem'} sx={{ marginRight: { xs: 0, md: '2rem' } }}>
+          <Stack direction="row" spacing={'0.5rem'} sx={{ marginRight: { xs: 0, md: '2rem' }, alignItems: 'center' }}>
             <IconButton sx={{ color: 'white', padding: '0.5rem' }}>
                 <DarkModeIcon sx={{ fontSize: '1.25rem' }} />
             </IconButton>
@@ -86,22 +116,50 @@ function Navbar() {
                 <PersonOutlinedIcon sx={{ fontSize: '1.25rem' }} />
             </IconButton>
             
-            <Button 
-              variant="outlined" 
-              sx={{ 
-                color: 'white', 
-                borderColor: '#333', 
-                borderRadius: '0.625rem', 
-                textTransform: 'none',
-                fontSize: '0.9rem',
-                paddingLeft: '1.5rem', 
-                paddingRight: '1.5rem',
-                marginLeft: '0.5rem',
-                '&:hover': { borderColor: '#4ca38d', backgroundColor: 'rgba(76, 163, 141, 0.05)' }
-              }}
-            >
-              Bejelentkezés
-            </Button>
+            {isLoggedIn ? (
+              <Stack direction="row" spacing={2} alignItems="center" sx={{ ml: 2 }}>
+                <Typography sx={{ color: 'white', fontWeight: 600, fontSize: '0.95rem' }}>
+                  Szia, {userFirstName}!
+                </Typography>
+                <Button
+                  onClick={handleLogout}
+                  variant="outlined"
+                  sx={{
+                    borderColor: '#4ca38d',
+                    color: '#4ca38d',
+                    fontWeight: 700,
+                    textTransform: 'none',
+                    borderRadius: '0.6rem',
+                    px: 2,
+                    '&:hover': {
+                      backgroundColor: 'rgba(76, 163, 141, 0.1)',
+                      borderColor: '#3d8270'
+                    }
+                  }}
+                >
+                  Kijelentkezés
+                </Button>
+              </Stack>
+            ) : (
+              <Button
+                component={Link}
+                to="/bejelentkezes"
+                variant="contained"
+                sx={{
+                  backgroundColor: '#4ca38d',
+                  color: '#0a1410',
+                  fontWeight: 700,
+                  textTransform: 'none',
+                  borderRadius: '0.6rem',
+                  px: 3,
+                  '&:hover': {
+                    backgroundColor: '#3d8270',
+                  }
+                }}
+              >
+                Bejelentkezés
+              </Button>
+            )}
           </Stack>
 
         </Toolbar>

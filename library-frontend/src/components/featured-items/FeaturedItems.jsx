@@ -1,10 +1,18 @@
 import * as React from 'react';
-import { Box, Container, Typography, CircularProgress, Button } from '@mui/material';
-import ItemCard from './ItemCard';
+import { Box, Typography, CircularProgress, Button } from '@mui/material';
+import ItemCard from '../../ui/ItemCard';
+import ItemDetails from '../../ui/ItemDetails';
 
 function FeaturedItems() {
   const [items, setItems] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [selectedItem, setSelectedItem] = React.useState(null);
+  const [isDetailsOpen, setIsDetailsOpen] = React.useState(false);
+
+  const handleOpenDetails = (item) => {
+    setSelectedItem(item);
+    setIsDetailsOpen(true);
+  };
 
   React.useEffect(() => {
     fetch('http://localhost:8080/api/items/featured')
@@ -21,7 +29,7 @@ function FeaturedItems() {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: '10rem', paddingBottom: '10rem' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: '10rem', paddingBottom: '10rem', backgroundColor: '#101A17' }}>
         <CircularProgress sx={{ color: '#4ca38d' }} />
       </Box>
     );
@@ -98,9 +106,9 @@ function FeaturedItems() {
           paddingRight: '5rem'
         }}
       >
-        {items.map((data) => (
+        {items.map((item) => (
           <Box
-            key={data.itemId}
+            key={item.itemId}
             sx={{
               flex: '1 1 18.75rem',
               maxWidth: {
@@ -111,10 +119,16 @@ function FeaturedItems() {
               display: 'flex'
             }}
           >
-            <ItemCard item={data} />
+            <ItemCard item={item} onOpenDetails={() => handleOpenDetails(item)} />
           </Box>
         ))}
       </Box>
+
+      <ItemDetails 
+        open={isDetailsOpen} 
+        onClose={() => setIsDetailsOpen(false)} 
+        item={selectedItem} 
+      />
     </Box>
   );
 }

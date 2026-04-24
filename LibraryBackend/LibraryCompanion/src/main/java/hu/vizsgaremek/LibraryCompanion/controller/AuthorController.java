@@ -39,4 +39,9 @@ public class AuthorController {
         authorService.deleteAuthor(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<Author>> filterAuthors(@RequestParam(required = false) String name) {
+        return ResponseEntity.ok(authorService.filterAuthors(name));
+    }
 }

@@ -4,11 +4,13 @@ import hu.vizsgaremek.LibraryCompanion.model.ItemType;
 import hu.vizsgaremek.LibraryCompanion.model.Loan;
 import hu.vizsgaremek.LibraryCompanion.model.User;
 import hu.vizsgaremek.LibraryCompanion.service.LoanService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,4 +61,12 @@ public class LoanController {
         String email = principal.getName();
         return ResponseEntity.ok(loanService.getMyLoans(email));
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<Loan>> filterLoans(
+            @RequestParam(required = false) String userEmail,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate beforeDue) {
+        return ResponseEntity.ok(loanService.filterLoans(userEmail, beforeDue));
+    }
+
 }

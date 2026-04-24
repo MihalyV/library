@@ -2,11 +2,13 @@ package hu.vizsgaremek.LibraryCompanion.controller;
 
 import hu.vizsgaremek.LibraryCompanion.model.User;
 import hu.vizsgaremek.LibraryCompanion.service.UserService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -40,4 +42,13 @@ public class UserController {
         userService.deleteUserById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<User>> filterUsers(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate registeredAfter) {
+        return ResponseEntity.ok(userService.filterUsers(name, email, registeredAfter));
+    }
+
 }

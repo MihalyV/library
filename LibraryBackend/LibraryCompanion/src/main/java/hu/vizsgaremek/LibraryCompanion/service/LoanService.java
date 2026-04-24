@@ -8,6 +8,8 @@ import hu.vizsgaremek.LibraryCompanion.repository.ItemCopyRepository;
 import hu.vizsgaremek.LibraryCompanion.repository.LoanRepository;
 import hu.vizsgaremek.LibraryCompanion.repository.UserRepository;
 import hu.vizsgaremek.LibraryCompanion.repository.WorkerRepository;
+import hu.vizsgaremek.LibraryCompanion.specifaications.GenericSpecifications;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,4 +80,19 @@ public class LoanService {
     public Loan saveLoan(Loan loan) {
         return loanRepository.save(loan);
     }
-}
+
+
+
+        public List<Loan> filterLoans(String userEmail, LocalDate beforeDue) {
+            Specification<Loan> spec = Specification.where((Specification<Loan>) null);
+
+            if (userEmail != null)
+                spec = spec.and((root, query, builder) ->
+                        builder.like(builder.lower(root.join("user").get("email")), "%" + userEmail.toLowerCase() + "%"));
+
+            if (beforeDue != null)
+                spec = spec.and(GenericSpecifications.lessThan("dueDate", beforeDue));
+
+            return loanRepository.findAll(spec);
+        }
+    }

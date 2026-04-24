@@ -2,13 +2,14 @@ package hu.vizsgaremek.LibraryCompanion.service;
 
 import hu.vizsgaremek.LibraryCompanion.model.Author;
 import hu.vizsgaremek.LibraryCompanion.repository.AuthorRepository;
+import hu.vizsgaremek.LibraryCompanion.specifaications.GenericSpecifications;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class AuthorService {
-
     private final AuthorRepository authorRepository;
 
     public AuthorService(AuthorRepository authorRepository) {
@@ -17,6 +18,13 @@ public class AuthorService {
 
     public List<Author> getAllAuthors() {
         return authorRepository.findAll();
+    }
+
+    public List<Author> filterAuthors(String name) {
+        Specification<Author> spec = Specification.where((Specification<Author>) null);
+        if (name != null && !name.isEmpty())
+            spec = spec.and(GenericSpecifications.likeAttribute("authorName", name));
+        return authorRepository.findAll(spec);
     }
 
     public Author getAuthorById(Long id) {
@@ -29,11 +37,7 @@ public class AuthorService {
     }
 
     public void deleteAuthor(Long id) {
-        if (!authorRepository.existsById(id)) {
-            throw new RuntimeException("Nincs ilyen ID-jú szerző!");
-        } else {
-            authorRepository.deleteById(id);
-        }
+        authorRepository.deleteById(id);
     }
-
 }
+

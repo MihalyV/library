@@ -42,4 +42,12 @@ public class WorkerController {
         workerService.deleteWorkerById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<Worker>> filterWorkers(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String email) {
+        return ResponseEntity.ok(workerService.filterWorkers(name, email));
+    }
+
 }

@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -39,5 +41,22 @@ public class LoanController {
     public ResponseEntity<Void> deleteLoanById(@PathVariable Long id) {
         loanService.deleteLoanById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/borrow/{itemId}")
+    public ResponseEntity<?> borrowItem(@PathVariable Long itemId, Principal principal) {
+        try {
+            String email = principal.getName();
+            Loan newLoan = loanService.borrowItem(itemId, email);
+            return new ResponseEntity<>(newLoan, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/my-loans")
+    public ResponseEntity<List<Loan>> getMyLoans(Principal principal) {
+        String email = principal.getName();
+        return ResponseEntity.ok(loanService.getMyLoans(email));
     }
 }

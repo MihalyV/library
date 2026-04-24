@@ -22,7 +22,7 @@ public class Loan {
     private ItemCopy itemCopy;
 
     @ManyToOne
-    @JoinColumn(name = "librarian_ID", nullable = false)
+    @JoinColumn(name = "librarian_ID", nullable = true)
     private Worker librarian;
 
     @Column(name = "loan_date", nullable = false)

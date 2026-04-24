@@ -1,49 +1,39 @@
 package hu.vizsgaremek.LibraryCompanion.controller;
 
+import hu.vizsgaremek.LibraryCompanion.dto.ItemDTO;
 import hu.vizsgaremek.LibraryCompanion.model.Item;
-import hu.vizsgaremek.LibraryCompanion.model.User;
-import hu.vizsgaremek.LibraryCompanion.service.ItemService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import hu.vizsgaremek.LibraryCompanion.repository.ItemCopyRepository;
+import hu.vizsgaremek.LibraryCompanion.repository.ItemsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/items")
 public class ItemController {
 
-    private final ItemService itemService;
+    @Autowired
+    private ItemsRepository itemsRepository;
 
-
-    public ItemController(ItemService itemService) {
-        this.itemService = itemService;
-    }
+    @Autowired
+    private ItemCopyRepository itemCopyRepository;
 
     @GetMapping
-    public ResponseEntity<List<Item>> getAllItems() {
-        return ResponseEntity.ok(itemService.getAllItems());
-    }
+    public List<ItemDTO> getAllItems() {
+        List<Item> items = itemsRepository.findAll();
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Item> getItemById(@PathVariable Long id) {
-        return ResponseEntity.ok(itemService.getItemById(id));
-    }
-
-    @GetMapping("/featured")
-    public List<Item> getFeaturedItems() {
-        return itemService.getFeaturedItems();
-    }
-
-    @PostMapping
-    public ResponseEntity<Item> createItem(@RequestBody Item item) {
-        Item newItem = itemService.saveItem(item);
-        return new ResponseEntity<>(newItem, HttpStatus.CREATED);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteItemById(@PathVariable Long id) {
-        itemService.deleteItemById(id);
-        return ResponseEntity.noContent().build();
+        return items.stream()
+                .map(item -> {
+                    boolean hasAvailable = !itemCopyRepository
+                            .findByItem_ItemIdAndStatus(item.getItemId(), "Elérhető")
+                            .isEmpty();
+                    String status = hasAvailable ? "Elérhető" : "Nem elérhető";
+                    return new ItemDTO(item, status);
+                })
+                .collect(Collectors.toList());
     }
 }

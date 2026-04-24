@@ -1,19 +1,35 @@
 import * as React from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { 
   Box, Container, Typography, TextField, InputAdornment, 
-  IconButton, Stack, Button, MenuItem, Select, FormControl, InputLabel
+  IconButton, Stack, Button, MenuItem, Select
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 function Search() {
-  const [searchTerm, setSearchTerm] = React.useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const queryParam = searchParams.get('query') || '';
   
-  // Állapot a szűrők megjelenítéséhez (mint a Catalog.jsx-ben)
+  const [searchTerm, setSearchTerm] = React.useState(queryParam);
   const [showFilters, setShowFilters] = React.useState(false);
   const [type, setType] = React.useState('Összes típus');
   const [status, setStatus] = React.useState('Minden státusz');
   const [genre, setGenre] = React.useState('Összes');
+
+  React.useEffect(() => {
+    setSearchTerm(queryParam);
+  }, [queryParam]);
+
+  const handleSearchTrigger = () => {
+    setSearchParams(searchTerm ? { query: searchTerm } : {});
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearchTrigger();
+    }
+  };
 
   return (
     <Box sx={{ 
@@ -41,13 +57,12 @@ function Search() {
           border: '1px solid rgba(255, 255, 255, 0.05)',
           mb: '5rem'
         }}>
-          {/* Felső sor: Kereső + Gombok */}
           <Stack 
             direction="row" 
             spacing={2} 
             sx={{ 
               mb: showFilters ? '2rem' : 0,
-              alignItems: 'center' // Itt javítva: sx-en belül van az alignItems!
+              alignItems: 'center'
             }}
           >
             <TextField
@@ -55,7 +70,7 @@ function Search() {
               placeholder="Cím, szerző vagy ISBN alapján keresés..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              // Fontos: Itt az InputProps-on belül minden rendben van MUI esetén
+              onKeyPress={handleKeyPress}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -70,12 +85,13 @@ function Search() {
                   height: '3.5rem',
                   '& fieldset': { border: 'none' },
                 },
-                '& input': { color: 'white' } // Javítva: precízebb választó
+                '& input': { color: 'white' }
               }}
             />
             
             <Button
               variant="contained"
+              onClick={handleSearchTrigger}
               startIcon={<SearchIcon />}
               sx={{ 
                 backgroundColor: '#4ca38d', 
@@ -108,7 +124,6 @@ function Search() {
             </IconButton>
           </Stack>
 
-          {/* Lenyíló szűrők (Catalog.jsx logika alapján) */}
           {showFilters && (
             <Box 
               sx={{ 
@@ -190,7 +205,6 @@ function Search() {
           )}
         </Box>
 
-        {/* Üres állapot ikonja */}
         <Box sx={{ textAlign: 'center', opacity: 0.4 }}>
           <Box sx={{ 
             width: '80px', 
@@ -207,7 +221,7 @@ function Search() {
             <SearchIcon sx={{ fontSize: '2.5rem', color: '#4ca38d' }} />
           </Box>
           <Typography variant="h6">
-            Használja a fenti keresőt a tételek megtalálásához
+            {searchTerm ? `Eredmények keresése: "${searchTerm}"` : 'Használja a fenti keresőt a tételek megtalálásához'}
           </Typography>
         </Box>
       </Container>

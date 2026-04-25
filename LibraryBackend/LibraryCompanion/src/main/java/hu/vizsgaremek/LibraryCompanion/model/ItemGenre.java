@@ -21,6 +21,11 @@ public class ItemGenre {
     @ManyToMany(mappedBy = "genres")
     private Set<Item> items = new HashSet<>();
 
+    public ItemGenre( String genreType) {
+
+        this.genreType = genreType;
+    }
+
     public ItemGenre() {
     }
 

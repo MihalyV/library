@@ -1,5 +1,7 @@
 package hu.vizsgaremek.LibraryCompanion.specifaications;
 
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
 public class GenericSpecifications {
@@ -13,11 +15,11 @@ public class GenericSpecifications {
                 builder.like(builder.lower(root.get(attribute)), "%" + value.toLowerCase() + "%");
     }
 
-    public static <T> Specification<T> greaterThan(String attribute, Comparable<?> value) {
+    public static <T, Y extends Comparable<? super Y>> Specification<T> greaterThan(String attribute, Y value) {
         return (root, query, builder) -> builder.greaterThan(root.get(attribute), value);
     }
-
-    public static <T> Specification<T> lessThan(String attribute, Comparable<?> value) {
+    public static <T, Y extends Comparable<? super Y>> Specification<T> lessThan(String attribute, Y value) {
         return (root, query, builder) -> builder.lessThan(root.get(attribute), value);
     }
+
 }

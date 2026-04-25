@@ -56,6 +56,18 @@ public class Item {
     public Item() {
     }
 
+    public Item( String title, boolean featured, String ISBN, ItemType itemType, Set<ItemGenre> genres, Set<Author> author, String shortDescription, String longDescription, Integer minAge) {
+        this.title = title;
+        this.featured = featured;
+        this.ISBN = ISBN;
+        this.itemType = itemType;
+        this.genres = genres;
+        this.author = author;
+        this.shortDescription = shortDescription;
+        this.longDescription = longDescription;
+        this.minAge = minAge;
+    }
+
     public Long getItemId() {
         return itemId;
     }

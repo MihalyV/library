@@ -2,6 +2,7 @@ package hu.vizsgaremek.LibraryCompanion.controller;
 
 import hu.vizsgaremek.LibraryCompanion.dto.ItemDTO;
 import hu.vizsgaremek.LibraryCompanion.model.Item;
+import hu.vizsgaremek.LibraryCompanion.model.ItemType;
 import hu.vizsgaremek.LibraryCompanion.repository.ItemCopyRepository;
 import hu.vizsgaremek.LibraryCompanion.repository.ItemsRepository;
 import hu.vizsgaremek.LibraryCompanion.service.ItemService;

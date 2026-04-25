@@ -14,6 +14,10 @@ public class ItemType {
     @Column(name = "item_type")
     private String itemType;
 
+    public ItemType( String itemType) {
+        this.itemType = itemType;
+    }
+
     public ItemType() {
     }
 

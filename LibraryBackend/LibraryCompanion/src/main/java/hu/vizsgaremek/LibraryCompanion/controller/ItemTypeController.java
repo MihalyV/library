@@ -22,6 +22,8 @@ public class ItemTypeController {
         return ResponseEntity.ok(itemTypeService.getAllItemTypes());
     }
 
+
+
     @PostMapping
     public ResponseEntity<ItemType> createItemCopy(@RequestBody ItemType itemType) {
         ItemType newItemType = itemTypeService.saveItemType(itemType);

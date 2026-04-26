@@ -82,6 +82,52 @@ export const api = {
         return await response.json();
     },
 
+    addItem: async (itemData) => {
+        const response = await fetch(`${BASE_URL}/items`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify(itemData),
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || 'Hiba a tétel mentése során');
+        }
+
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            return await response.json();
+        }
+        return response.text();
+    },
+
+    getItemTypes: async () => {
+        const response = await fetch(`${BASE_URL}/item-types`, {
+            method: 'GET',
+            headers: getHeaders(),
+        });
+        if (!response.ok) throw new Error('Nem sikerült a típusok lekérése');
+        return await response.json();
+    },
+
+    getItemGenres: async () => {
+        const response = await fetch(`${BASE_URL}/item-genres`, {
+            method: 'GET',
+            headers: getHeaders(),
+        });
+        if (!response.ok) throw new Error('Nem sikerült a műfajok lekérése');
+        return await response.json();
+    },
+
+    getAuthors: async () => {
+        const response = await fetch(`${BASE_URL}/authors`, {
+            method: 'GET',
+            headers: getHeaders(),
+        });
+        if (!response.ok) throw new Error('Nem sikerült a szerzők lekérése');
+        return await response.json();
+    },
+
     borrowItem: async (itemId) => {
         const response = await fetch(`${BASE_URL}/loans/borrow/${itemId}`, {
             method: 'POST',

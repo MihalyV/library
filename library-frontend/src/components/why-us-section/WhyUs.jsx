@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { Box, Container, Typography, Paper, Stack } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import TouchAppIcon from '@mui/icons-material/TouchApp';
 
 function WhyUs() {
   const features = [
@@ -17,10 +17,10 @@ function WhyUs() {
       icon: <LibraryBooksIcon sx={{ fontSize: '1.5rem', color: '#4ca38d' }} />,
     },
     {
-      title: 'Részletes nyilvántartás',
-      description: 'Minden tétel előzményei nyomon követhetők. Kölcsönzések, szerkesztések egy helyen.',
-      icon: <AssignmentIcon sx={{ fontSize: '1.5rem', color: '#4ca38d' }} />,
-    },
+      title: 'Kényelmes foglalás',
+      description: 'Felejtse el a sorban állást! Foglalja le kedvenc köteteit online pár kattintással, mi pedig összekészítjük Önnek, mire a könyvtárba ér.',
+      icon: <TouchAppIcon sx={{ fontSize: '1.5rem', color: '#4ca38d' }} />,
+    }
   ];
 
   return (

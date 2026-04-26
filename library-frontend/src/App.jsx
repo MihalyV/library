@@ -8,6 +8,7 @@ import SearchPage from './pages/SearchPage';
 import Auth from './components/auth/Auth';
 import Profile from './components/profile/Profile'
 import Bookshelf from './components/bookshelf/Bookshelf';
+import AddItem from './components/add-item/AddItem';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/bejelentkezes" element={<Auth />} />
             <Route path="/profil" element={<Profile />} />
             <Route path="/konyvespolc" element={<Bookshelf/>} />
+            <Route path="/uj-tetel" element={<AddItem />} />
           </Routes>
         </Box>
         <Footer />

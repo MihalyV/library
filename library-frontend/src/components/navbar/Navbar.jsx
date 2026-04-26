@@ -1,12 +1,13 @@
+import React, { useState, useEffect } from 'react';
 import { 
   AppBar, Box, Toolbar, IconButton, Typography, 
   Container, Button, Stack 
 } from '@mui/material';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { api } from '../../services/api';
+import style from './Navbar.module.css';
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -20,6 +21,7 @@ function Navbar() {
     const token = localStorage.getItem('library_token');
     const firstName = localStorage.getItem('user_first_name');
     const role = localStorage.getItem('user_role') || 'user';
+    
     if (token && firstName) {
       setIsLoggedIn(true);
       setUserFirstName(firstName);
@@ -74,60 +76,7 @@ function Navbar() {
   };
 
   return (
-    <>
-      <style>{`
-        @keyframes fadeInDown {
-          from { opacity: 0; transform: translateY(-0.5rem); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes shimmer {
-          0% { background-position: -200% center; }
-          100% { background-position: 200% center; }
-        }
-        .nav-logo-text {
-          background: linear-gradient(90deg, #ffffff 0%, #4ca38d 40%, #7eddc8 60%, #ffffff 100%);
-          background-size: 200% auto;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          animation: shimmer 4s linear infinite;
-        }
-        .nav-page-btn {
-          position: relative;
-          transition: color 0.25s ease, background-color 0.25s ease !important;
-        }
-        .nav-page-btn::after {
-          content: '';
-          position: absolute;
-          bottom: 0.3rem;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 0;
-          height: 0.15rem;
-          background: linear-gradient(90deg, #4ca38d, #7eddc8);
-          border-radius: 1rem;
-          transition: width 0.3s ease;
-        }
-        .nav-page-btn:hover::after,
-        .nav-page-btn.active::after {
-          width: 60%;
-        }
-        .nav-icon-btn {
-          transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease !important;
-        }
-        .nav-icon-btn:hover {
-          transform: scale(1.1);
-        }
-        .nav-logout-btn {
-          transition: all 0.25s ease !important;
-        }
-        .nav-login-btn {
-          transition: all 0.25s ease, box-shadow 0.25s ease !important;
-        }
-        .nav-login-btn:hover {
-          box-shadow: 0 0 1rem rgba(76, 163, 141, 0.5) !important;
-        }
-      `}</style>
+    <Box sx={{ flexGrow: 1 }}>
 
       <AppBar
         position="sticky"
@@ -355,7 +304,7 @@ function Navbar() {
           </Toolbar>
         </Container>
       </AppBar>
-    </>
+    </Box>
   );
 }
 

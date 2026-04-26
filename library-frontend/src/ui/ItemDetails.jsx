@@ -1,20 +1,44 @@
-import * as React from 'react';
+import React from 'react';
 import { 
   Dialog, DialogContent, Box, Typography, 
-  IconButton, Chip, Stack, Button 
+  IconButton, Chip, Stack, Fade 
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import HistoryIcon from '@mui/icons-material/History';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import ChildCareIcon from '@mui/icons-material/ChildCare';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import FingerprintIcon from '@mui/icons-material/Fingerprint';
 
 function ItemDetails({ open, onClose, item }) {
-  const [tab, setTab] = React.useState('description');
-
   if (!item) return null;
 
   const authors = item.author?.map(a => a.authorName).join(", ") || "Ismeretlen szerző";
-  const genres = item.genre?.map(g => g.genreName) || [];
+  const genres = item.genres?.map(g => g.genreType) || [];
+
+  const InfoCard = ({ icon, label, value }) => (
+    <Box sx={{ 
+      display: 'flex', 
+      alignItems: 'center', 
+      gap: '0.8rem', 
+      padding: '1rem', 
+      backgroundColor: 'rgba(255,255,255,0.02)', 
+      borderRadius: '0.8rem',
+      border: '0.05rem solid rgba(255,255,255,0.05)',
+      flex: '1 1 14rem'
+    }}>
+      {icon}
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Typography sx={{ color: '#64748b', fontSize: '0.7rem', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05rem' }}>
+          {label}
+        </Typography>
+        <Typography sx={{ color: '#f1f5f9', fontSize: '0.95rem', fontWeight: 500 }}>
+          {value}
+        </Typography>
+      </Box>
+    </Box>
+  );
 
   return (
     <Dialog 
@@ -22,136 +46,148 @@ function ItemDetails({ open, onClose, item }) {
       onClose={onClose}
       maxWidth="md"
       fullWidth
+      TransitionComponent={Fade}
+      TransitionProps={{ timeout: 450 }}
       slotProps={{
         paper: {
           sx: { 
-            backgroundColor: '#0a1410', 
-            color: 'white', 
-            borderRadius: '1.2rem',
+            backgroundColor: '#070f0c', 
+            color: '#e2e8f0', 
+            borderRadius: '1.5rem',
             backgroundImage: 'none',
-            border: '1px solid rgba(255,255,255,0.08)'
+            border: '0.05rem solid rgba(76,163,141,0.25)',
+            boxShadow: '0 2.5rem 5rem rgba(0,0,0,0.7)'
           }
         }
       }}
     >
       <IconButton
         onClick={onClose}
-        sx={{ position: 'absolute', right: '1.5rem', top: '1.5rem', color: '#ffffff', opacity: 0.8, zIndex: 10 }}
+        sx={{ 
+          position: 'absolute', 
+          right: '1.5rem', 
+          top: '1.5rem', 
+          color: '#4ca38d', 
+          backgroundColor: 'rgba(76,163,141,0.08)',
+          '&:hover': { backgroundColor: 'rgba(76,163,141,0.15)', transform: 'rotate(90deg)' },
+          transition: 'all 0.3s ease',
+          zIndex: 10 
+        }}
       >
-        <CloseIcon />
+        <CloseIcon sx={{ fontSize: '1.3rem' }} />
       </IconButton>
 
-      <DialogContent sx={{ padding: { xs: '2rem', md: '4rem' } }}>
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: '3rem', marginBottom: '2.5rem' }}>
+      <DialogContent sx={{ padding: { xs: '2rem', md: '3.5rem' }, overflowX: 'hidden' }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: '3rem', mb: '3rem' }}>
           
-          <Box 
-            component="img"
-            src={`https://picsum.photos/seed/${item.itemId}/400/600`}
-            alt={item.title}
-            sx={{ 
-              width: '180px', 
-              height: '240px', 
-              borderRadius: '1rem',
-              objectFit: 'cover',
-              border: '1px solid rgba(255,255,255,0.1)',
-              flexShrink: 0,
-              boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
-            }}
-          />
+          <Box sx={{ position: 'relative', flexShrink: 0, display: 'flex', justifyContent: 'center' }}>
+            <Box 
+              component="img"
+              src={`https://picsum.photos/seed/${item.itemId}/400/600`}
+              alt={item.title}
+              sx={{ 
+                width: '16rem', 
+                height: '22rem', 
+                borderRadius: '1.2rem',
+                objectFit: 'cover',
+                border: '0.05rem solid rgba(76,163,141,0.3)',
+                boxShadow: '0 1.5rem 3.5rem rgba(0,0,0,0.5)'
+              }}
+            />
+            {item.featured && (
+              <Box sx={{
+                position: 'absolute',
+                top: '1rem',
+                left: '1rem',
+                backgroundColor: '#fbc02d',
+                color: '#070f0c',
+                padding: '0.3rem 0.8rem',
+                borderRadius: '2rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                fontWeight: 800,
+                fontSize: '0.75rem',
+                boxShadow: '0 0.5rem 1rem rgba(0,0,0,0.3)'
+              }}>
+                <AutoAwesomeIcon sx={{ fontSize: '0.9rem' }} /> KIEMELT
+              </Box>
+            )}
+          </Box>
 
-          <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, pt: 1 }}>
-            <Typography variant="h3" sx={{ fontWeight: 700, fontFamily: 'serif', marginBottom: '1.5rem', fontSize: '2.2rem' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'center' }}>
+            <Typography variant="h3" sx={{ fontWeight: 800, fontFamily: 'serif', mb: '0.75rem', color: '#ffffff', lineHeight: 1.1, fontSize: { xs: '1.8rem', md: '2.5rem' } }}>
               {item.title}
             </Typography>
 
-            <Stack direction="row" spacing={1} sx={{ marginBottom: '2rem', flexWrap: 'wrap', gap: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.6rem', mb: '1.5rem' }}>
+              <PersonOutlineOutlinedIcon sx={{ color: '#4ca38d', fontSize: '1.4rem' }} />
+              <Typography sx={{ color: '#7eddc8', fontSize: '1.15rem', fontWeight: 500 }}>
+                {authors}
+              </Typography>
+            </Box>
+
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', mb: '2rem' }}>
               <Chip 
                 label={item.status || "Elérhető"} 
                 sx={{ 
-                  backgroundColor: item.status === "Kikölcsönözve" ? 'rgba(239, 68, 68, 0.15)' : 'rgba(76, 163, 141, 0.15)', 
-                  color: item.status === "Kikölcsönözve" ? '#ef4444' : '#4ca38d', 
-                  fontWeight: 600, 
-                  borderRadius: '8px' 
+                  backgroundColor: item.status === "Kikölcsönözve" ? 'rgba(239, 68, 68, 0.12)' : 'rgba(76, 163, 141, 0.12)', 
+                  color: item.status === "Kikölcsönözve" ? '#f87171' : '#4ca38d', 
+                  fontWeight: 800,
+                  fontSize: '0.8rem',
+                  border: `0.05rem solid ${item.status === "Kikölcsönözve" ? 'rgba(239, 68, 68, 0.3)' : 'rgba(76, 163, 141, 0.3)'}`
                 }} 
               />
-              <Chip 
-                label={item.itemType?.typeName || 'Könyv'} 
-                sx={{ backgroundColor: 'rgba(255,255,255,0.05)', color: '#9ca3af', borderRadius: '8px' }} 
-              />
-              {genres.map((g, index) => (
-                <Chip key={`${g}-${index}`} label={g} sx={{ backgroundColor: 'rgba(255,255,255,0.05)', color: '#9ca3af', borderRadius: '8px' }} />
+              {genres.map((g, i) => (
+                <Chip key={i} label={g} variant="outlined" sx={{ color: '#94a3b8', borderColor: 'rgba(148,163,184,0.3)', fontSize: '0.8rem' }} />
               ))}
-            </Stack>
+            </Box>
 
-            <Stack spacing={1.5}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <PersonOutlineOutlinedIcon sx={{ color: '#9ca3af', fontSize: '1.4rem' }} />
-                <Typography sx={{ color: '#9ca3af', fontSize: '1.05rem' }}>
-                  <span style={{ color: 'white', fontWeight: 500 }}>Szerző:</span> {authors}
-                </Typography>
-              </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <MenuBookIcon sx={{ color: '#9ca3af', fontSize: '1.2rem' }} />
-                <Typography sx={{ color: '#9ca3af', fontSize: '1.05rem' }}>
-                  <span style={{ color: 'white', fontWeight: 500 }}>ISBN:</span> {item.isbn || 'Nincs megadva'}
-                </Typography>
-              </Box>
-            </Stack>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '0.8rem' }}>
+              <InfoCard 
+                icon={<InfoOutlinedIcon sx={{ color: '#4ca38d' }} />} 
+                label="Típus" 
+                value={item.itemType?.itemType || 'Ismeretlen'} 
+              />
+              <InfoCard 
+                icon={<MenuBookIcon sx={{ color: '#4ca38d' }} />} 
+                label="ISBN" 
+                value={item.isbn || '---'} 
+              />
+              <InfoCard 
+                icon={<ChildCareIcon sx={{ color: '#4ca38d' }} />} 
+                label="Korhatár" 
+                value={`${item.minAge || 0}+ év`} 
+              />
+              <InfoCard 
+                icon={<FingerprintIcon sx={{ color: '#4ca38d' }} />} 
+                label="Azonosító" 
+                value={`#${item.itemId}`} 
+              />
+            </Box>
           </Box>
         </Box>
 
-        <hr style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.05)', marginBottom: '2.5rem' }} />
-
-        <Box sx={{ 
-          display: 'flex', 
-          backgroundColor: 'rgba(0,0,0,0.2)', 
-          borderRadius: '12px', 
-          padding: '5px', 
-          marginBottom: '2.5rem',
-          border: '1px solid rgba(255,255,255,0.03)'
-        }}>
-          <Button 
-            fullWidth
-            onClick={() => setTab('description')}
-            sx={{ 
-              borderRadius: '10px', textTransform: 'none', fontWeight: 600, py: 1.2,
-              backgroundColor: tab === 'description' ? '#16211e' : 'transparent',
-              color: tab === 'description' ? 'white' : '#6b7280',
-              '&:hover': { backgroundColor: tab === 'description' ? '#1c2925' : 'rgba(255,255,255,0.02)' }
-            }}
-          >
-            Leírás
-          </Button>
-          <Button 
-            fullWidth
-            onClick={() => setTab('history')}
-            startIcon={<HistoryIcon />}
-            sx={{ 
-              borderRadius: '10px', textTransform: 'none', fontWeight: 600, py: 1.2,
-              backgroundColor: tab === 'history' ? '#16211e' : 'transparent',
-              color: tab === 'history' ? 'white' : '#6b7280',
-              '&:hover': { backgroundColor: tab === 'history' ? '#1c2925' : 'rgba(255,255,255,0.02)' }
-            }}
-          >
-            Előzmények
-          </Button>
-        </Box>
-
-        <Box sx={{ minHeight: '12rem' }}>
-          {tab === 'description' ? (
-            <Stack spacing={3}>
-              <Typography sx={{ color: '#d1d5db', fontSize: '1.1rem', lineHeight: 1.6 }}>
-                {item.shortDescription || "Nincs rövid leírás."}
-              </Typography>
-              <Typography sx={{ color: '#9ca3af', fontSize: '1rem', lineHeight: 1.7, fontWeight: 300 }}>
-                {item.longDescription || "Ehhez a tételhez nem érhető el részletes ismertető."}
-              </Typography>
-            </Stack>
-          ) : (
-            <Typography sx={{ color: '#6b7280', textAlign: 'center', marginTop: '3rem' }}>
-              Még nincsenek korábbi kölcsönzési adatok.
+        <Box sx={{ borderTop: '0.05rem solid rgba(255,255,255,0.05)', pt: '2rem' }}>
+          <Typography sx={{ 
+            color: '#7eddc8', 
+            fontSize: '0.8rem', 
+            fontWeight: 800, 
+            textTransform: 'uppercase', 
+            letterSpacing: '0.1rem',
+            mb: '1.5rem'
+          }}>
+            Leírás és részletek
+          </Typography>
+          
+          <Stack spacing={2.5}>
+            <Typography sx={{ color: '#ffffff', fontSize: '1.2rem', lineHeight: 1.6, fontWeight: 500, fontStyle: 'italic', borderLeft: '0.2rem solid #4ca38d', pl: '1.5rem' }}>
+              {item.shortDescription || "Nincs rövid összefoglaló."}
             </Typography>
-          )}
+            <Typography sx={{ color: '#94a3b8', fontSize: '1.05rem', lineHeight: 1.8, textAlign: 'justify' }}>
+              {item.longDescription || "Ehhez a tételhez nem tartozik részletes leírás."}
+            </Typography>
+          </Stack>
         </Box>
       </DialogContent>
     </Dialog>

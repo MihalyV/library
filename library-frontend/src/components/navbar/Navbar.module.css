@@ -1,0 +1,46 @@
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.nav-page-btn::after {
+  content: "";
+  position: absolute;
+  bottom: 0.3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0.15rem;
+  background: linear-gradient(90deg, #4ca38d, #7eddc8);
+  border-radius: 1rem;
+  transition: width 0.3s ease;
+}
+.nav-page-btn:hover::after,
+.nav-page-btn.active::after {
+  width: 60%;
+}
+.nav-icon-btn {
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease !important;
+}
+.nav-icon-btn:hover {
+  transform: scale(1.1);
+}
+.nav-logout-btn {
+  transition: all 0.25s ease !important;
+}
+.nav-login-btn {
+  transition:
+    all 0.25s ease,
+    box-shadow 0.25s ease !important;
+}
+.nav-login-btn:hover {
+  box-shadow: 0 0 1rem rgba(76, 163, 141, 0.5) !important;
+}

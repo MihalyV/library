@@ -18,7 +18,8 @@ function Auth() {
   const [isLogin, setIsLogin] = React.useState(true);
   const [showPassword, setShowPassword] = React.useState(false);
   const [accountType, setAccountType] = React.useState('Olvasó');
-  
+  const LIBRARIAN_SECRET_CODE = "LIB-2024-ADMIN";
+
   const [formData, setFormData] = React.useState({
     lastName: '',
     firstName: '',
@@ -57,6 +58,13 @@ function Auth() {
         if (formData.password !== formData.confirmPassword) {
           setError('A két jelszó nem egyezik!');
           return;
+        }
+
+        if (accountType === 'Könyvtáros') {
+          if (formData.inviteCode !== LIBRARIAN_SECRET_CODE) {
+            setError('Érvénytelen könyvtárosi meghívó kód!');
+            return;
+          }
         }
 
         const userData = {

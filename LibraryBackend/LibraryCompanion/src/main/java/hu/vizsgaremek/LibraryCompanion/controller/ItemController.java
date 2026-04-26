@@ -7,11 +7,9 @@ import hu.vizsgaremek.LibraryCompanion.repository.ItemCopyRepository;
 import hu.vizsgaremek.LibraryCompanion.repository.ItemsRepository;
 import hu.vizsgaremek.LibraryCompanion.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,5 +56,20 @@ public class ItemController {
                     .toList();
             return ResponseEntity.ok(items);
         }
+
+    @GetMapping("/featured")
+    public ResponseEntity<List<ItemDTO>> getFeaturedItems() {
+        List<Item> featuredItems = itemService.getFeaturedItems();
+        var items = featuredItems.stream()
+                .map(item -> new ItemDTO(item, "Elérhető"))
+                .toList();
+        return ResponseEntity.ok(items);
     }
+
+    @PostMapping
+    public ResponseEntity<Item> createItem(@RequestBody Item item) {
+        Item newItem = itemService.saveItem(item);
+        return new ResponseEntity<>(newItem, HttpStatus.CREATED);
+    }
+}
 

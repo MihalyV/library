@@ -41,11 +41,11 @@ function Navbar() {
 
   const getPages = () => {
     const basePages = ['Főoldal', 'Katalógus', 'Keresés'];
-    if (userRole === 'admin' || userRole === 'librarian') {
-      basePages.push('Dashboard');
-    } else if (isLoggedIn) {
-      basePages.push('Könyvespolc');
-    }
+    if (userRole === 'ROLE_ADMIN' || userRole === 'ROLE_LIBRARIAN') {
+  basePages.push('Új tétel');
+} else if (isLoggedIn) {
+  basePages.push('Könyvespolc');
+}
     return basePages;
   };
 
@@ -53,7 +53,7 @@ function Navbar() {
     if (page === 'Főoldal') return '/';
     if (page === 'Katalógus') return '/katalogus';
     if (page === 'Keresés') return '/kereses';
-    if (page === 'Dashboard') return '/dashboard';
+    if (page === 'Új tétel') return '/uj-tetel';
     if (page === 'Könyvespolc') return '/konyvespolc';
     return '/';
   };

@@ -1,11 +1,12 @@
 import {
-  Box, Typography, TextField, Button, MenuItem,
+  Box, Typography, TextField, Button,
   CircularProgress, Alert, Snackbar, FormControlLabel, Switch, Autocomplete, Chip
 } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutlined';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { useState, useEffect } from 'react';
 import { api } from '../../services/api';
+import styles from "./AddItem.module.css";
 
 const FIELD_SX = {
   '& .MuiOutlinedInput-root': {
@@ -85,6 +86,7 @@ function AddItem() {
         setFetchLoading(false);
       }
     };
+
     fetchMeta();
   }, []);
 
@@ -95,18 +97,19 @@ function AddItem() {
     }
 
     setLoading(true);
+
     try {
       const payload = {
         title: form.title,
         ISBN: form.ISBN || null,
         featured: form.featured,
-        itemType: typeof form.itemType === 'string' 
-          ? { itemType: form.itemType } 
+        itemType: typeof form.itemType === 'string'
+          ? { itemType: form.itemType }
           : { typeId: form.itemType.typeId },
-        genres: form.genres.map(g => 
+        genres: form.genres.map((g) =>
           typeof g === 'string' ? { genreType: g } : { genreId: g.genreId }
         ),
-        author: form.authors.map(a => 
+        author: form.authors.map((a) =>
           typeof a === 'string' ? { authorName: a } : { authorId: a.authorId }
         ),
         shortDescription: form.shortDescription,
@@ -115,10 +118,18 @@ function AddItem() {
       };
 
       await api.addItem(payload);
+
       setSnack({ open: true, msg: 'Sikeres mentés!', severity: 'success' });
       setForm({
-        title: '', ISBN: '', featured: false, itemType: null,
-        genres: [], authors: [], shortDescription: '', longDescription: '', minAge: '',
+        title: '',
+        ISBN: '',
+        featured: false,
+        itemType: null,
+        genres: [],
+        authors: [],
+        shortDescription: '',
+        longDescription: '',
+        minAge: '',
       });
     } catch (err) {
       setSnack({ open: true, msg: err.message || 'Hiba történt.', severity: 'error' });
@@ -129,21 +140,31 @@ function AddItem() {
 
   return (
     <>
-      <Box className="container">
-        <Box className="card">
-          <Box className="header">
-            <Box sx={{
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              width: '2.75rem', height: '2.75rem', borderRadius: '0.75rem',
-              backgroundColor: 'rgba(76,163,141,0.12)', border: '0.05rem solid rgba(76,163,141,0.25)'
-            }}>
+      <Box className={styles.container}>
+        <Box className={styles.card}>
+          <Box className={styles.header}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '2.75rem',
+                height: '2.75rem',
+                borderRadius: '0.75rem',
+                backgroundColor: 'rgba(76,163,141,0.12)',
+                border: '0.05rem solid rgba(76,163,141,0.25)',
+              }}
+            >
               <AutoStoriesIcon sx={{ color: '#4ca38d', fontSize: '1.4rem' }} />
             </Box>
+
             <Box>
               <Typography sx={{ color: '#e2e8f0', fontWeight: 700, fontSize: '1.2rem', fontFamily: 'serif' }}>
                 Új Tétel Hozzáadása
               </Typography>
-              <Typography sx={{ color: '#4ca38d', fontSize: '0.8rem' }}>Könyvtárosi panel</Typography>
+              <Typography sx={{ color: '#4ca38d', fontSize: '0.8rem' }}>
+                Könyvtárosi panel
+              </Typography>
             </Box>
           </Box>
 
@@ -152,29 +173,29 @@ function AddItem() {
               <CircularProgress sx={{ color: '#4ca38d' }} />
             </Box>
           ) : (
-            <Box className="form-content">
-              <div className="row">
+            <Box className={styles.formContent}>
+              <div className={styles.row}>
                 <TextField
                   label="Cím *"
                   value={form.title}
-                  onChange={(e) => setForm({...form, title: e.target.value})}
+                  onChange={(e) => setForm({ ...form, title: e.target.value })}
                   sx={FIELD_SX}
                 />
                 <TextField
                   label="ISBN"
                   value={form.ISBN}
-                  onChange={(e) => setForm({...form, ISBN: e.target.value})}
+                  onChange={(e) => setForm({ ...form, ISBN: e.target.value })}
                   sx={FIELD_SX}
                 />
               </div>
 
-              <div className="row">
+              <div className={styles.row}>
                 <Autocomplete
                   freeSolo
                   options={types}
                   getOptionLabel={(opt) => opt.itemType || opt}
                   value={form.itemType}
-                  onChange={(e, val) => setForm({...form, itemType: val})}
+                  onChange={(e, val) => setForm({ ...form, itemType: val })}
                   renderInput={(params) => <TextField {...params} label="Típus *" sx={FIELD_SX} />}
                   slotProps={{ paper: { sx: AUTOCOMPLETE_PAPER_SX } }}
                 />
@@ -182,7 +203,7 @@ function AddItem() {
                   label="Minimális életkor *"
                   type="number"
                   value={form.minAge}
-                  onChange={(e) => setForm({...form, minAge: e.target.value})}
+                  onChange={(e) => setForm({ ...form, minAge: e.target.value })}
                   sx={FIELD_SX}
                 />
               </div>
@@ -193,15 +214,14 @@ function AddItem() {
                 options={genresList}
                 getOptionLabel={(opt) => opt.genreType || opt}
                 value={form.genres}
-                onChange={(e, val) => setForm({...form, genres: val})}
+                onChange={(e, val) => setForm({ ...form, genres: val })}
                 renderTags={(value, getTagProps) =>
                   value.map((option, index) => (
-                    <Chip 
-                      label={option.genreType || option} 
-                      {...getTagProps({ index })} 
-                      sx={{ 
-                        '& .MuiChip-label': { color: '#ffffff !important' }
-                      }}
+                    <Chip
+                      key={index}
+                      label={option.genreType || option}
+                      {...getTagProps({ index })}
+                      sx={{ '& .MuiChip-label': { color: '#ffffff !important' } }}
                     />
                   ))
                 }
@@ -215,15 +235,14 @@ function AddItem() {
                 options={authorsList}
                 getOptionLabel={(opt) => opt.authorName || opt}
                 value={form.authors}
-                onChange={(e, val) => setForm({...form, authors: val})}
+                onChange={(e, val) => setForm({ ...form, authors: val })}
                 renderTags={(value, getTagProps) =>
                   value.map((option, index) => (
-                    <Chip 
-                      label={option.authorName || option} 
-                      {...getTagProps({ index })} 
-                      sx={{ 
-                        '& .MuiChip-label': { color: '#ffffff !important' }
-                      }}
+                    <Chip
+                      key={index}
+                      label={option.authorName || option}
+                      {...getTagProps({ index })}
+                      sx={{ '& .MuiChip-label': { color: '#ffffff !important' } }}
                     />
                   ))
                 }
@@ -236,7 +255,7 @@ function AddItem() {
                 multiline
                 rows={2}
                 value={form.shortDescription}
-                onChange={(e) => setForm({...form, shortDescription: e.target.value})}
+                onChange={(e) => setForm({ ...form, shortDescription: e.target.value })}
                 sx={FIELD_SX}
               />
 
@@ -245,19 +264,19 @@ function AddItem() {
                 multiline
                 rows={4}
                 value={form.longDescription}
-                onChange={(e) => setForm({...form, longDescription: e.target.value})}
+                onChange={(e) => setForm({ ...form, longDescription: e.target.value })}
                 sx={FIELD_SX}
               />
 
-              <div className="submit-area">
+              <div className={styles.submitArea}>
                 <FormControlLabel
                   control={
                     <Switch
                       checked={form.featured}
-                      onChange={(e) => setForm({...form, featured: e.target.checked})}
-                      sx={{ 
-                        '& .MuiSwitch-switchBase.Mui-checked': { color: '#4ca38d' }, 
-                        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { backgroundColor: '#4ca38d' } 
+                      onChange={(e) => setForm({ ...form, featured: e.target.checked })}
+                      sx={{
+                        '& .MuiSwitch-switchBase.Mui-checked': { color: '#4ca38d' },
+                        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { backgroundColor: '#4ca38d' },
                       }}
                     />
                   }
@@ -267,17 +286,21 @@ function AddItem() {
                 <Button
                   onClick={handleSubmit}
                   disabled={loading}
-                  startIcon={loading ? <CircularProgress size={16} sx={{ color: '#0a1410' }} /> : <AddCircleOutlineIcon />}
+                  startIcon={
+                    loading
+                      ? <CircularProgress size={16} sx={{ color: '#0a1410' }} />
+                      : <AddCircleOutlineIcon />
+                  }
                   sx={{
                     background: 'linear-gradient(135deg, #4ca38d 0%, #3d8270 100%)',
-                    color: '#0a1410', 
-                    fontWeight: 700, 
-                    borderRadius: '0.6rem', 
-                    px: '2rem', 
+                    color: '#0a1410',
+                    fontWeight: 700,
+                    borderRadius: '0.6rem',
+                    px: '2rem',
                     py: '0.7rem',
                     textTransform: 'none',
                     '&:hover': { background: 'linear-gradient(135deg, #5ab89f 0%, #4a9a85 100%)' },
-                    '&.Mui-disabled': { background: 'rgba(76,163,141,0.25)', color: 'rgba(10,20,16,0.5)' }
+                    '&.Mui-disabled': { background: 'rgba(76,163,141,0.25)', color: 'rgba(10,20,16,0.5)' },
                   }}
                 >
                   {loading ? 'Mentés...' : 'Tétel hozzáadása'}
@@ -294,13 +317,13 @@ function AddItem() {
         onClose={() => setSnack({ ...snack, open: false })}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert 
-          severity={snack.severity} 
-          sx={{ 
+        <Alert
+          severity={snack.severity}
+          sx={{
             borderRadius: '0.75rem',
             backgroundColor: snack.severity === 'success' ? '#0d1f18' : 'inherit',
             color: snack.severity === 'success' ? '#7eddc8' : 'inherit',
-            border: `0.05rem solid ${snack.severity === 'success' ? 'rgba(76,163,141,0.4)' : 'transparent'}`
+            border: `0.05rem solid ${snack.severity === 'success' ? 'rgba(76,163,141,0.4)' : 'transparent'}`,
           }}
         >
           {snack.msg}

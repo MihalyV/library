@@ -1,52 +1,59 @@
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(1.5rem); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .container {
-          min-height: 100vh;
-          background-color: #070f0c;
-          display: flex;
-          justify-content: center;
-          align-items: flex-start;
-          padding: 4rem 1rem;
-        }
-        .card {
-          width: 100%;
-          max-width: 52rem;
-          background-color: rgba(10, 20, 16, 0.97);
-          border: 0.05rem solid rgba(76,163,141,0.18);
-          border-radius: 1.25rem;
-          box-shadow: 0 1.5rem 4rem rgba(0,0,0,0.55);
-          animation: fadeUp 0.45s ease;
-        }
-        .header {
-          display: flex;
-          align-items: center;
-          gap: 0.875rem;
-          padding: 1.5rem 2rem;
-          border-bottom: 0.05rem solid rgba(76,163,141,0.12);
-          background: linear-gradient(135deg, rgba(76,163,141,0.08) 0%, transparent 70%);
-          border-radius: 1.25rem 1.25rem 0 0;
-        }
-        .form-content {
-          padding: 2rem;
-          display: flex;
-          flex-direction: column;
-          gap: 1.25rem;
-        }
-        .row {
-          display: flex;
-          gap: 1rem;
-          flex-wrap: wrap;
-        }
-        .row > * {
-          flex: 1 1 14rem;
-        }
-        .submit-area {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          flex-wrap: wrap;
-          gap: 1rem;
-          padding-top: 0.25rem;
-        }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(1.5rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.container {
+  min-height: 100vh;
+  background-color: #070f0c;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 4rem 1rem;
+}
+
+.card {
+  width: 100%;
+  max-width: 52rem;
+  background-color: rgba(10, 20, 16, 0.97);
+  border: 0.05rem solid rgba(76,163,141,0.18);
+  border-radius: 1.25rem;
+  box-shadow: 0 1.5rem 4rem rgba(0,0,0,0.55);
+  animation: fadeUp 0.45s ease;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1.5rem 2rem;
+  border-bottom: 0.05rem solid rgba(76,163,141,0.12);
+  background: linear-gradient(135deg, rgba(76,163,141,0.08) 0%, transparent 70%);
+  border-radius: 1.25rem 1.25rem 0 0;
+}
+
+.formContent {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.row > * {
+  flex: 1 1 14rem;
+}
+
+.submitArea {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 0.25rem;
+}
